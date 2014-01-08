@@ -1,0 +1,24 @@
+%h1 Legendary Games Generator
+
+= simple_form_for Generator.new(2,3), url: generator_path, method: :post, html: {class: 'form-horizontal'} do |f|
+  %h4 Number of Players
+  = f.input :number_of_players, as: :radio_buttons, collection: (1..5).to_a, item_wrapper_class: 'radio-inline', label: false
+  %h4 Number of Games
+  = f.input :number_of_games, as: :radio_buttons, collection: (1..10).to_a, item_wrapper_class: 'radio-inline', label: false
+  = f.submit 'Generate!', class: 'btn btn-primary btn-lg', style:'margin-top:15px'
+
+- if @games
+  %h2 Generated Games
+  %ul.nav.nav-tabs
+    - @games.size.times do |number|
+      %li{class: "#{'active' if number == 0}"}
+        %a{href: "#game_#{number+1}", 'data-toggle' => 'tab'}="Game ##{number+1}"
+  .tab-content
+    - @games.each_with_index do |game, number|
+      .tab-pane{id: "game_#{number+1}", class: "fade#{' in active' if number == 0}"}
+        - {Mastermind: :masterminds,
+        Scheme: :schemes,
+        Henchmen: :henchmen,
+        Villains: :villains,
+        Heroes: :heroes,}.each_pair do |title, card_type|
+          = render 'card_type', title: title, card_type: card_type, game: game
