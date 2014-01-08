@@ -38,3 +38,5 @@ group :test do
   gem 'simplecov', require: false
   gem "shoulda-matchers"
 end
+
+gem 'rails_12factor', group: :production
